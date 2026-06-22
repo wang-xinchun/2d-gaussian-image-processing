@@ -26,6 +26,15 @@ __pycache__/
 .ruff_cache/
 .cache/
 .ipynb_checkpoints/
+.venv/
+.venvs/
+venv/
+env/
+ENV/
+.env
+.env.*
+!.env.example
+!.env.sample
 
 # Generic heavy artifacts.
 *.pt
