@@ -1,0 +1,72 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_f03"
+full_id = "V1/T01/A_f03"
+
+[dataset]
+name = "UHD_deblur"
+task = "paired_uhd_deblurring_edge_guided_detail_cache_safe_extended_budget"
+train_input = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/train/input_new"
+train_target = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/train/gt_new"
+val_input = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/train/input_new"
+val_target = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/train/gt_new"
+test_input = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/test/input300"
+test_target = "/root/autodl-tmp/2D_Gaussian_Dataset/UHD_deblur/test/gt300"
+accepted_inventory_doc = "docs/unpacked_dataset_acceptance_20260425.md"
+strategy_doc = "docs/next_experiment_dataset_strategy_20260425.md"
+metric_target_doc = "docs/stage_metric_targets_20260505.md"
+train_offset = 100
+train_limit = 0
+val_offset = 0
+val_limit = 20
+preflight_val_limit = 20
+train_crop_size = 512
+val_crop_size = 0
+augment_flip = true
+num_workers = 8
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 48
+lowres_scale = 4
+highres_blocks = 3
+lowres_blocks = 6
+decoder_blocks = 3
+affine_rank = 6
+gaussian_atoms = 6
+gaussian_param_dim = 10
+max_frequency = 6.0
+max_texture_gain = 1.2
+use_edge_guidance = true
+edge_guidance_blocks = 2
+edge_guidance_strength = 0.25
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+laplacian_weight = 0.02
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "short"
+wall_clock_minutes = 58
+max_steps = 2500
+batch_size = 20
+grad_accum = 1
+seed = 20260511
+device = "auto"
+amp = false
+log_interval = 10
+val_interval = 500
+checkpoint_interval = 250
+max_val_batches = 20
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

@@ -1,0 +1,84 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_dsh16_bvi_aom_synth_v1_gpu3_context_guided_train"
+full_id = "V1/T01/A_dsh16_bvi_aom_synth_v1_gpu3_context_guided_train"
+
+[task]
+name = "UHD_video_deshaking"
+mode = "paired_video_stabilization_frame_gpu3_context_guided_train"
+classification = "current_uhd_video_deshaking_gpu3_context_guided_candidate"
+notes = "Prepared next-candidate GPU3-only context-guided training package after A_dsh15. This enables existing structural guidance modules without changing the model code path."
+
+[dataset]
+name = "UHD_video_deshaking_paired_frames"
+task = "paired_uhd_video_deshake_stabilization_frames"
+data_root = "/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1"
+train_input = "/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1/paired_frames/train/input"
+train_target = "/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1/paired_frames/train/target"
+val_input = "/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1/paired_frames/val/input"
+val_target = "/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1/paired_frames/val/target"
+train_offset = 0
+train_limit = 112
+val_offset = 0
+val_limit = 32
+preflight_val_limit = 32
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 0
+verified_train_pairs = 112
+verified_val_pairs = 32
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 48
+lowres_scale = 4
+highres_blocks = 3
+lowres_blocks = 6
+decoder_blocks = 3
+affine_rank = 6
+gaussian_atoms = 6
+gaussian_param_dim = 10
+max_frequency = 6.0
+max_texture_gain = 1.2
+use_edge_guidance = true
+edge_guidance_blocks = 2
+edge_guidance_strength = 0.20
+use_directional_frequency_guidance = true
+use_train_inference_consistency = true
+train_context_size = 728
+train_supervision_crop_size = 512
+use_gaussian_decoder_guidance = true
+gaussian_decoder_guidance_blocks = 1
+gaussian_decoder_guidance_strength = 0.15
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+laplacian_weight = 0.02
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "context_guided_candidate"
+wall_clock_minutes = 70.0
+max_steps = 1600
+batch_size = 4
+grad_accum = 1
+seed = 20260606
+device = "auto"
+amp = false
+log_interval = 5
+val_interval = 50
+checkpoint_interval = 100
+max_val_batches = 32
+ddp_find_unused_parameters = true
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

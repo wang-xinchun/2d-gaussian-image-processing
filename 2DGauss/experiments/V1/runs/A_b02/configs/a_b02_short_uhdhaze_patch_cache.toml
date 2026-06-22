@@ -1,0 +1,73 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_b02"
+full_id = "V1/T01/A_b02"
+
+[dataset]
+name = "UHD_haze"
+task = "paired_uhd_dehazing_patch_cache"
+train_input = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/train/input"
+train_target = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/train/gt"
+val_input = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/val/input"
+val_target = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/val/gt"
+test_input = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/test/input"
+test_target = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511/test/gt"
+accepted_inventory_doc = "docs/unpacked_dataset_acceptance_20260425.md"
+strategy_doc = "docs/next_experiment_dataset_strategy_20260425.md"
+metric_target_doc = "docs/stage_metric_targets_20260505.md"
+train_offset = 0
+train_limit = 0
+val_offset = 0
+val_limit = 100
+preflight_val_limit = 20
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 8
+cache_patch_size = 512
+cache_train_patches_per_image = 8
+cache_source_train_offset = 100
+cache_png_compress_level = 4
+cache_root = "/root/autodl-tmp/2DGauss/datasets/cache/UHD_haze_patch512_p8_png_seed20260511"
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 32
+lowres_scale = 4
+highres_blocks = 2
+lowres_blocks = 4
+decoder_blocks = 2
+affine_rank = 4
+gaussian_atoms = 4
+gaussian_param_dim = 10
+max_frequency = 4.0
+max_texture_gain = 1.0
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "short"
+wall_clock_minutes = 58
+max_steps = 3200
+batch_size = 56
+grad_accum = 1
+seed = 20260511
+device = "auto"
+amp = false
+log_interval = 10
+val_interval = 500
+checkpoint_interval = 500
+max_val_batches = 100
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

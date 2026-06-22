@@ -1,0 +1,92 @@
+# deshake_ddp_0_3_pending Gate Check
+
+- [x] User requested distributed training on physical GPU0 and GPU3.
+- [x] DDP-capable training entrypoint exists in `scripts/train_v1_t01.py`.
+- [x] GPU guard allows only physical GPU ids `0,3`.
+- [x] Deshaking-specific preflight gate exists.
+- [x] Preflight rejects high live GPU utilization by default.
+- [x] Preflight can record high GPU utilization as warnings only when explicitly called with `gpu_utilization_policy=warn`.
+- [x] Preflight rejects unsafe per-rank/global batch size by default.
+- [x] Preflight rejects excessive per-rank dataloader workers by default.
+- [x] Launcher refuses to start without `TWODGAUSS_DESHAKE_DATA_ROOT`.
+- [x] Launcher refuses to start without `TWODGAUSS_DESHAKE_CONFIG`.
+- [x] Launcher runs `scripts/preflight_deshake_ddp_gpu0_3.py` before DDP.
+- [x] Smoke launcher exists, runs readiness first, defaults to dry-run, and requires explicit confirmation for a real smoke.
+- [x] Smoke launcher rejects configs above the short-smoke cap before calling the DDP launcher.
+- [x] Queued DDP smoke launcher exists, polls readiness, defaults to dry-run, and requires explicit queue confirmation for non-dry-run.
+- [x] Queued DDP smoke launcher refuses the current real data/config as `not_ready` without invoking the smoke wrapper.
+- [x] Queued DDP smoke launcher invokes the downstream smoke wrapper only after readiness passes in selftest dry-run and records `status=dry_run_invoked`.
+- [x] Explicit shared-GPU DDP smoke launcher exists, defaults to dry-run, requires `TWODGAUSS_GPU_UTILIZATION_POLICY=warn`, and requires a confirmation token for non-dry-run.
+- [x] Shared-GPU DDP smoke launcher caps the calibrated path at per-rank `batch_size<=12`, global `batch_size<=24`, `dataset.num_workers<=0`, 512px train/val crop, and exports `TWODGAUSS_CUDA_MEMORY_FRACTION`.
+- [x] Queued shared-GPU DDP smoke launcher exists, polls readiness with shared caps, defaults to dry-run, and requires explicit queue confirmation for non-dry-run.
+- [x] Explicit GPU0-only smoke launcher exists for the large-batch path and defaults to dry-run.
+- [x] GPU0-only smoke launcher defaults to conservative caps, supports explicit calibrated cap overrides, and forwards `TWODGAUSS_CUDA_MEMORY_FRACTION`.
+- [x] GPU0-only smoke launcher requires `TWODGAUSS_DESHAKE_CONFIRM_GPU0_SMOKE=launch_gpu0_deshake_bs8_smoke` for non-dry-run launch.
+- [x] Prepare-and-queue wrapper exists, defaults to plan-only, refuses missing explicit video pairs, and requires a confirmation token before writing paired frames.
+- [x] Prepare-and-queue shared wrapper exists, defaults to plan-only, refuses missing explicit video pairs, requires `TWODGAUSS_GPU_UTILIZATION_POLICY=warn`, and generates the calibrated shared config with per-rank `batch_size=12`, global `24`, `num_workers=0`, and 512px crop unless explicitly lowered.
+- [x] Readiness checker exists and writes dataset/preflight/summary JSON without launching training.
+- [x] Readiness monitor exists, is read-only, records JSONL attempts, and returns nonzero while real data is not ready.
+- [x] Paired-frame preparation script exists, defaults to plan-only, refuses same-file input/target pairs, and requires explicit video pairs before writing frames.
+- [x] Paired-frame config generator exists and refuses raw Y4M-only incomplete real data.
+- [x] Preflight recognizes `.y4m` as video evidence.
+- [x] Preflight rejects data roots with files modified inside the default transfer-stability window.
+- [x] Positive preflight selftest passes with physical GPUs `0,3`, per-rank `batch_size=2`, global `batch_size=4`, paired frame evidence, and dry-run launcher mode.
+- [x] Readiness checker selftest passes and the formal launcher dry-run selftest exits before creating any tmux training session.
+- [x] Generated selftest paired-frame DDP smoke config passes preflight and launcher dry-run, without launching training.
+- [x] Generated selftest paired-frame GPU0 smoke config uses `batch_size=8` and passes preflight plus launcher dry-run, without launching training.
+- [x] Generated selftest Y4M-to-paired-frame prep output creates paired PNG frames, generates `A_dsh04` DDP smoke config, and passes preflight plus launcher/smoke dry-run without launching training.
+- [x] Prepare-and-queue selftest creates paired PNG frames, generates `A_dsh05`, reaches queued DDP smoke dry-run, and creates no tmux training session.
+- [x] Generated shared-GPU selftest config `A_dsh06` completed one real DDP step on physical GPU0+GPU3 with per-rank `batch_size=1`, global `2`, `cuda_memory_fraction=0.12`, exit code `0`, and no project process residue.
+- [x] Generated shared-GPU selftest config `A_dsh06` reaches the queued shared smoke wrapper in dry-run with `status=dry_run_invoked`.
+- [x] Generated shared prepare-and-queue selftest config `A_dsh07` writes paired frames only under the selftest root, generates shared-safe `batch_size=1/global=2/num_workers=0`, and reaches queued shared smoke dry-run.
+- [x] Generated GPU0-only selftest config `A_dsh08` completed one real physical-GPU0 `batch_size=24` step at `TWODGAUSS_CUDA_MEMORY_FRACTION=0.85`, after `0.75` correctly hit the allocator cap; no project process residue remained afterward.
+- [x] Generated calibrated shared-GPU selftest config `A_dsh10` completed one real DDP step on physical GPU0+GPU3 with per-rank `batch_size=12`, global `24`, `cuda_memory_fraction=0.50`, 512px crop, rank0 mapped to physical GPU0, rank1 mapped to physical GPU3, both ranks recording peak reserved memory about `18.60GiB`, exit code `0`, and no project process residue.
+- [x] Shared and queued shared wrappers dry-run successfully with the calibrated default caps: per-rank `batch_size<=12`, global `<=24`, `num_workers=0`, crop `<=512`, and `TWODGAUSS_CUDA_MEMORY_FRACTION=0.50`.
+- [x] Generated shared prepare-and-queue selftest config `A_dsh11` writes paired frames only under the selftest root, generates calibrated `batch_size=12/global=24/num_workers=0/crop=512` config, and reaches queued shared smoke dry-run.
+- [x] `scripts/train_v1_t01.py` applies `TWODGAUSS_CUDA_MEMORY_FRACTION` before training allocation and records `cuda_memory_fraction` in train metrics.
+- [x] `scripts/train_v1_t01.py` records CUDA allocated/reserved and peak allocated/reserved memory in train metrics for GPU smoke calibration.
+- [x] BVI-AOM source archives and the UHD shake synthesis package were unpacked and statically validated.
+- [x] `BVI-AOM_synth_deshake_v1` was generated from BVI-AOM videos with the UHD shake synthesis algorithm and strict quality filtering.
+- [x] `BVI-AOM_synth_deshake_v1` train/val paired `.npy` views are verified: train `112` pairs, val `32` pairs.
+- [x] `scripts/inspect_deshake_dataset.py` recognizes `.npy` paired frame views.
+- [x] `PairedImageDataset` loads the synthesized `uint16 RGB .npy` frames as `float32 [0,1]` tensors with 512px crop.
+- [x] Generated A_dsh13 real-data shared DDP smoke config passes config generation and CPU preflight.
+- [x] A_dsh13 queued shared smoke dry-run reaches the shared wrapper with `status=dry_run_invoked`.
+- [x] A_dsh13 conservative block-policy preflight passes data/config/batch/worker/crop/pair checks and is blocked only by live GPU0/GPU3 utilization above the formal `20%` gate.
+- [x] Generated A_dsh14 controlled shared DDP train config uses the verified BVI-AOM synthetic paired `.npy` view, per-rank `batch_size=12`, global `24`, `num_workers=0`, 512px crop, and `max_steps=60`.
+- [x] A_dsh14 startup preflight passed under the explicit shared warning policy with `TWODGAUSS_CUDA_MEMORY_FRACTION=0.50`, physical GPUs `0,3`, data/config/pair/batch/worker/crop checks clean, and GPU utilization recorded as shared-mode warnings only.
+- [x] A_dsh14 controlled shared DDP training completed with exit code `0`, `60` train steps, `6` validation records, final `val_psnr=20.984133518913794`, `latest.pt`, `final.pt`, and `step_000060.pt`.
+- [x] A_dsh14 rank metrics map rank0 to physical GPU0 and rank1 to physical GPU3, with peak reserved memory about `18.92GiB` and `18.88GiB`; no GPU1/2 use was recorded.
+- [x] A_dsh14 post-run cleanup found no project tmux/training/torchrun/deshake-launcher residue and no killed external process.
+- [x] Explicit GPU3-only full-train launcher exists for no-displacement training when GPU0 is occupied.
+- [x] A_dsh15 GPU3-only preflight passed with physical GPU3 `48520MiB` free and `0%` utilization before launch.
+- [x] A_dsh15 avoided GPU0 because GPU0 was occupied by external processes, and GPU1/2 remained unused.
+- [x] A_dsh15 completed `1200` steps with `train_exit_code=0`, `241` train metric records, and `24` full-validation records.
+- [x] A_dsh15 saved `best_val.pt` at step `1000` and final/latest/step_001200 checkpoints at step `1200`.
+- [x] A_dsh15 independent final checkpoint evaluation improved over the shaky input baseline by about `+1.9972 dB` PSNR and `+0.1222` SSIM on the 32-pair validation view.
+- [x] A_dsh15 post-run cleanup found no project tmux/training/deshake-launcher residue and GPU3 returned to `0MiB` used.
+- [x] A_dsh16 candidate config prepared as an independent GPU3-only context-guided branch after A_dsh15.
+- [x] A_dsh16 keeps the verified BVI-AOM synthetic paired-frame data and full 32-pair validation protocol.
+- [x] A_dsh16 enables already implemented structural modules: edge guidance, directional-frequency guidance, train-inference consistency, and Gaussian decoder guidance.
+- [x] A_dsh16 CPU preflight passed one forward/backward plus full validation.
+- [x] A_dsh16 GPU3 context launcher dry-run passed live GPU/data/config/context gates and did not create a tmux training session or real training log.
+- [x] A_dsh16 real GPU3-only launch was attempted after user approval and failed with project-local CUDA OOM at `batch_size=4`, without external process displacement.
+- [x] A_dsh17 independent GPU3-only batch-size-2 candidate was prepared after A_dsh16 OOM.
+- [x] A_dsh17 safety gate correctly blocked dry-run when a new GPU3 process appeared.
+- [x] A_dsh17 dry-run and live preflight passed after GPU3 returned to idle.
+- [x] A_dsh17 completed `1600` steps with `train_exit_code=0`, `321` train metric records, `32` validation records, and final/best-val checkpoints.
+- [x] A_dsh17 independent final and best-val evaluations completed on the same 32-pair validation view.
+- [x] A_dsh17 post-run cleanup found no project training residue, GPU3 returned to `0MiB` used, GPU0 was avoided, and GPU1/2 were unused.
+- [x] Current candidate `/home/ldj/wxc/4K_8K` raw root is superseded for first smoke by `/home/ldj/wxc/4K_8K/BVI-AOM_synth_deshake_v1`; the raw root remains unsuitable as direct supervised training input without a paired-frame view.
+- [x] Old `UHD_haze` configs/data are still rejected as non-deshaking launch inputs.
+- [x] Real deshaking dataset root verified for the first synthesized smoke subset.
+- [x] Real deshaking config verified for the first synthesized smoke subset.
+- [ ] Preflight passes against the real deshaking dataset/config under the formal live GPU utilization gate.
+- [ ] Real GPU0-only calibrated large-batch smoke passes against verified real deshaking dataset/config.
+- [ ] Short DDP smoke run passes.
+- [ ] Formal block-policy DDP launch approved.
+
+Current rule: do not launch formal GPU0+GPU3 DDP training until every unchecked
+item above is resolved with current evidence. A_dsh15 remains the accepted
+paired-frame baseline; A_dsh17 is a safe completed comparison run but not the
+new best result.

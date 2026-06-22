@@ -1,0 +1,21 @@
+# V1/T01/A_4kd30 Manifest
+
+- Purpose: Keep A29 hard high/low route decoder heads, but add a route-delta trust region and staged branch pressure so route capacity moves only inside a validation-safe range.
+- Config: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd30/configs/a_4kd30_fast_4kdehaze_a24_route_decoder_heads_trust_region.toml`
+- Init: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd24/checkpoints/best_val.pt`, non-strict.
+- Teacher A: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd08/checkpoints/best_val.pt`.
+- Teacher B: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd15/checkpoints/best_val.pt`.
+- Main mechanism: `use_input_std_route_decoder_heads=true`; old residual, A27 terminal heads, and A28 feature expert are disabled.
+- Route rule: high route if `input_std > 0.07026463374495506`, else low route.
+- A30 delta trust: `input_std_route_delta_trust_weight=0.08`, budget `0.0015`.
+- A30 staged pressure: high/A08 branch `0.10`, low/A15 branch `0.03`, branch warmup `50` steps, branch ramp `150` steps, gate ramp `50` steps.
+- Sampling: natural fast-probe sampling; no A25/A26 balanced sampler.
+- Training: short 250-step probe with validation every 50 steps.
+- Acceptance: must beat A24 PSNR `17.790202882742463`; strong target `17.82`; milestone target A18 router `17.84693437641316`; high-route gap target `>-0.10 dB`; low-route gap `>= +0.03 dB`; SSIM `>=0.699`; loss `<=0.1205`.
+- Result analysis: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd30/result_analysis.md`
+- Formal training log: `/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd30/logs/train_20260614_173319.log`, exit code `0`.
+- Best validation: step `50`, `val_psnr=18.231969745567717`, `val_loss=0.122691053673625`.
+- Fast-test best-val: `psnr_mean=17.75180602939797`, `ssim_mean=0.7003354308009148`, `loss_mean=0.12060016021132469`.
+- A18 alignment: overall gap `-0.0951283464164498 dB`, low-route gap `+0.012763517901581372 dB`, high-route gap `-0.23814779446593295 dB`.
+- Route-regime: overall selected delta abs mean `0.0000578112014773069`, high selected delta `0.0000618680088908065`, low selected delta `0.0000547508029022107`.
+- Status: completed; not promoted.

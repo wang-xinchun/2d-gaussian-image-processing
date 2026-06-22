@@ -44,6 +44,12 @@ __pycache__/
 *.tgz
 *.7z
 *.rar
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.y4m
 *.bak
 *.log
 *.tmp
@@ -67,6 +73,8 @@ __pycache__/
 2DGauss/experiments/**/outputs/
 2DGauss/experiments/**/samples/
 2DGauss/experiments/**/template_snapshot/
+2DGauss/experiments/**/template_snapshot*/
+2DGauss/experiments/**/template_snapshot_*
 2DGauss/experiments/**/*.json
 2DGauss/experiments/**/*.jsonl
 2DGauss/experiments/**/*.png

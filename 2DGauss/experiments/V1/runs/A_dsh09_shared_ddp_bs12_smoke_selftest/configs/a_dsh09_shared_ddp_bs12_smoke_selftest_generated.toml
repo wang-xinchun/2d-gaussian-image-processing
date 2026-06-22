@@ -1,0 +1,73 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_dsh09_shared_ddp_bs12_smoke_selftest"
+full_id = "V1/T01/A_dsh09_shared_ddp_bs12_smoke_selftest"
+
+[task]
+name = "UHD_video_deshaking"
+mode = "paired_video_stabilization_frame_gpu0_3_ddp_smoke"
+classification = "current_uhd_video_deshaking_ddp_smoke_candidate"
+notes = "Generated only after paired train/val frame directories were verified under the deshaking data root."
+
+[dataset]
+name = "UHD_video_deshaking_paired_frames"
+task = "paired_uhd_video_deshake_stabilization_frames"
+data_root = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/gpu0_bs24_probe"
+train_input = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/gpu0_bs24_probe/train/input"
+train_target = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/gpu0_bs24_probe/train/target"
+val_input = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/gpu0_bs24_probe/val/input"
+val_target = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/gpu0_bs24_probe/val/target"
+train_offset = 0
+train_limit = 24
+val_offset = 0
+val_limit = 4
+preflight_val_limit = 4
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 0
+verified_train_pairs = 24
+verified_val_pairs = 4
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 32
+lowres_scale = 4
+highres_blocks = 2
+lowres_blocks = 4
+decoder_blocks = 2
+affine_rank = 4
+gaussian_atoms = 4
+gaussian_param_dim = 10
+max_frequency = 4.0
+max_texture_gain = 1.0
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "smoke"
+wall_clock_minutes = 5.0
+max_steps = 1
+batch_size = 12
+grad_accum = 1
+seed = 20260605
+device = "auto"
+amp = false
+log_interval = 1
+val_interval = 1
+checkpoint_interval = 1
+max_val_batches = 4
+ddp_find_unused_parameters = true
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

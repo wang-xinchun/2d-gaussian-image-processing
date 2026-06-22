@@ -1,0 +1,37 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_4kd18"
+full_id = "V1/T01/A_4kd18"
+
+[dataset]
+name = "4KDehaze_local_90_5_5_fast_probe_512"
+task = "paired_4k_dehazing_a08_a15_input_std_inference_router_fast_probe"
+val_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/val/input"
+val_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/val/gt"
+test_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/test/input"
+test_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/test/gt"
+crop_size = 512
+val_samples = 100
+test_samples = 100
+
+[router]
+type = "threshold_selector"
+feature = "input_std"
+direction = "lte"
+threshold = 0.07026463374495506
+selected_on = "validation_split"
+checkpoint_a_label = "A_4kd08"
+checkpoint_a_config = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd08/configs/a_4kd08_fast_4kdehaze_medium_detail_protected_blended_demand_control_probe.toml"
+checkpoint_a = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd08/checkpoints/best_val.pt"
+checkpoint_a_step = 700
+checkpoint_b_label = "A_4kd15"
+checkpoint_b_config = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd15/configs/a_4kd15_fast_4kdehaze_a08_best_no_haze_guard_ema995_finetune.toml"
+checkpoint_b = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd15/checkpoints/best_val.pt"
+checkpoint_b_step = 300
+prediction_rule = "use A_4kd15 when input_std <= threshold, else use A_4kd08"
+
+[evaluation]
+blend_grid = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd18/metrics/a08_a15_blend_grid_test_cpu.json"
+router_val_to_test = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd18/metrics/a08_a15_router_val_to_test_cpu.json"
+router_task_metrics = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd18/metrics/a08_a15_input_std_router_test_task_metrics_cpu.json"

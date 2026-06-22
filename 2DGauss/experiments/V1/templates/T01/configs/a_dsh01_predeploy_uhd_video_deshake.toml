@@ -1,0 +1,41 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_dsh01_predeploy"
+full_id = "V1/T01/A_dsh01_predeploy"
+
+[task]
+name = "UHD_video_deshaking"
+status = "predeploy_waiting_for_dataset"
+classification = "current_uhd_video_deshaking_predeploy"
+notes = "This package is for ultra-high-definition video deshaking/stabilization preparation."
+
+[dataset]
+expected_source = "incoming 390G 4K/8K video deshaking dataset"
+data_root = "TO_BE_FILLED_AFTER_TRANSFER"
+input_dir = "TO_BE_FILLED_AFTER_TRANSFER"
+target_dir = "TO_BE_FILLED_AFTER_TRANSFER_OR_EMPTY_IF_UNSUPERVISED"
+supervision_form = "unknown_until_dataset_inspection"
+train_split = "pending"
+val_split = "pending"
+test_split = "pending"
+
+[baseline_frame_enhancer]
+classification = "frame_enhancement_baseline_not_full_video_deshaking"
+config = "experiments/V1/runs/A_y03/configs/a_y03_medium_uhddeblur_feature_refinement_plus_edge_weighted_lightedge_5h_confirmation.toml"
+checkpoint = "experiments/V1/runs/A_y03/checkpoints/final.pt"
+recommended_tile_size = 1024
+recommended_tile_overlap = 96
+
+[deployment_gate]
+dataset_inspection_script = "scripts/inspect_deshake_dataset.py"
+temporal_proxy_metric_script = "scripts/evaluate_deshake_sequence_metrics.py"
+frame_enhancer_script = "scripts/run_v1_frame_enhancer.py"
+allowed_physical_gpus = "0,3"
+default_physical_gpu = "3"
+launch_training_allowed = false
+reason_training_blocked = "deshaking data/config/supervision/metrics are not verified yet"
+ddp_default_max_per_rank_batch_size = 2
+ddp_default_max_global_batch_size = 4
+ddp_default_max_gpu_utilization = 20
+ddp_default_max_num_workers = 2

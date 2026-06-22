@@ -1,0 +1,29 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_4kd19"
+full_id = "V1/T01/A_4kd19"
+
+[dataset]
+name = "4KDehaze_local_90_5_5"
+task = "paired_4k_dehazing_larger_subset_a08_a15_router_eval"
+val_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/val/input"
+val_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/val/gt"
+test_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/test/input"
+test_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/test/gt"
+crop_size = 512
+val_samples_total = 780
+test_samples_total = 781
+eval_val_limit = 100
+eval_test_limit = 100
+
+[router_eval]
+checkpoint_a_label = "A_4kd08"
+checkpoint_a_config = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd08/configs/a_4kd08_fast_4kdehaze_medium_detail_protected_blended_demand_control_probe.toml"
+checkpoint_a = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd08/checkpoints/best_val.pt"
+checkpoint_a_step = 700
+checkpoint_b_label = "A_4kd15"
+checkpoint_b_config = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd15/configs/a_4kd15_fast_4kdehaze_a08_best_no_haze_guard_ema995_finetune.toml"
+checkpoint_b = "/home/ldj/wxc/2DGauss/experiments/V1/runs/A_4kd15/checkpoints/best_val.pt"
+checkpoint_b_step = 300
+selection = "threshold tuned on larger validation subset, then fixed on larger test subset"

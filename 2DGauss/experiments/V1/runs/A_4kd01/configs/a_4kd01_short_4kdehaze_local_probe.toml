@@ -1,0 +1,66 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_4kd01"
+full_id = "V1/T01/A_4kd01"
+
+[dataset]
+name = "4KDehaze_local_90_5_5"
+task = "paired_4k_dehazing_local_split_probe"
+train_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/train/input"
+train_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/train/gt"
+val_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/val/input"
+val_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/val/gt"
+test_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/test/input"
+test_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5/test/gt"
+accepted_inventory_doc = "datasets/current_training_ready/TRAINING_DATASETS_READY.md"
+train_offset = 0
+train_limit = 0
+val_offset = 0
+val_limit = 100
+preflight_val_limit = 20
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 8
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 32
+lowres_scale = 4
+highres_blocks = 2
+lowres_blocks = 4
+decoder_blocks = 2
+affine_rank = 4
+gaussian_atoms = 4
+gaussian_param_dim = 10
+max_frequency = 4.0
+max_texture_gain = 1.0
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "short"
+wall_clock_minutes = 58
+max_steps = 2000
+batch_size = 16
+grad_accum = 1
+seed = 20260608
+device = "auto"
+amp = false
+log_interval = 10
+val_interval = 250
+checkpoint_interval = 250
+max_val_batches = 100
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

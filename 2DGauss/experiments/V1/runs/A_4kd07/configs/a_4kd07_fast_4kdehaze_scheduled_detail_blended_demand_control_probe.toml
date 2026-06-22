@@ -1,0 +1,117 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_4kd07"
+full_id = "V1/T01/A_4kd07"
+
+[dataset]
+name = "4KDehaze_local_90_5_5_fast_probe_512"
+task = "paired_4k_dehazing_scheduled_detail_blended_demand_control_fast_probe"
+train_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/train/input"
+train_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/train/gt"
+val_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/val/input"
+val_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/val/gt"
+test_input = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/test/input"
+test_target = "/home/ldj/wxc/2DGauss/datasets/current_training_ready/views/4KDehaze_local_90_5_5_fast_probe_512/test/gt"
+accepted_inventory_doc = "datasets/current_training_ready/TRAINING_DATASETS_READY.md"
+train_offset = 0
+train_limit = 0
+val_offset = 0
+val_limit = 100
+preflight_val_limit = 20
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 1
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 32
+lowres_scale = 4
+highres_blocks = 2
+lowres_blocks = 4
+decoder_blocks = 2
+affine_rank = 4
+gaussian_atoms = 4
+gaussian_param_dim = 10
+max_frequency = 4.0
+max_texture_gain = 1.0
+use_gaussian_decoder_guidance = true
+gaussian_decoder_guidance_blocks = 1
+gaussian_decoder_guidance_strength = 0.08
+gaussian_decoder_guidance_use_decoder_state_gate = true
+use_gaussian_feature_refinement = true
+gaussian_feature_refinement_blocks = 1
+gaussian_feature_refinement_strength = 0.08
+gaussian_feature_refinement_use_decoder_detail_hint = true
+gaussian_feature_refinement_use_confidence_normalization = true
+gaussian_feature_refinement_use_intervention_demand = true
+gaussian_feature_refinement_use_decoder_detail_gate = true
+use_gaussian_control_canvas = true
+gaussian_control_canvas_blocks = 1
+gaussian_control_canvas_strength = 0.06
+gaussian_control_canvas_stage = "pre_guidance"
+gaussian_control_canvas_share_to_guidance = true
+gaussian_control_canvas_share_to_guidance_blend = 0.25
+gaussian_control_canvas_share_to_guidance_detail_preserve = true
+gaussian_control_canvas_share_to_guidance_detail_preserve_strength = 0.65
+gaussian_control_canvas_share_to_guidance_detail_preserve_floor = 0.35
+gaussian_control_canvas_share_to_guidance_detail_preserve_kernel_size = 5
+gaussian_control_canvas_share_to_guidance_detail_preserve_schedule = "linear"
+gaussian_control_canvas_share_to_guidance_detail_preserve_schedule_start = 0.25
+gaussian_control_canvas_share_to_guidance_detail_preserve_schedule_end = 0.75
+gaussian_control_canvas_use_target_conditioned_feedback = true
+gaussian_control_canvas_target_mode = "restoration_demand"
+gaussian_control_canvas_feedback_mode = "additive"
+gaussian_control_canvas_use_confidence_normalization = true
+gaussian_control_canvas_residual_delta_strength = 0.35
+gaussian_control_canvas_feedback_selectivity_mode = "demand_budget"
+gaussian_control_canvas_feedback_selectivity_temperature = 2.0
+gaussian_control_canvas_feedback_demand_power = 1.20
+gaussian_control_canvas_feedback_budget = 0.20
+gaussian_control_canvas_feedback_floor = 0.02
+gaussian_control_canvas_feedback_target_mean = 0.10
+gaussian_control_canvas_feedback_mean_boost_cap = 1.25
+gaussian_control_canvas_feedback_demand_source = "canvas"
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.04
+edge_magnitude_weight = 0.015
+high_frequency_weight = 0.025
+high_frequency_kernel_size = 5
+local_contrast_weight = 0.02
+local_contrast_kernel_size = 7
+chroma_weight = 0.01
+dark_channel_weight = 0.01
+dark_channel_kernel_size = 15
+use_edge_weighted_reconstruction = true
+edge_weighted_reconstruction_strength = 0.01
+edge_weighted_reconstruction_floor = 1.0
+control_canvas_weight = 0.04
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "short"
+wall_clock_minutes = 58
+max_steps = 800
+batch_size = 2
+grad_accum = 4
+seed = 20260610
+device = "auto"
+amp = false
+log_interval = 10
+val_interval = 100
+checkpoint_interval = 100
+max_val_batches = 100
+control_diagnostics = true
+best_selection_metric = "val_psnr"
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

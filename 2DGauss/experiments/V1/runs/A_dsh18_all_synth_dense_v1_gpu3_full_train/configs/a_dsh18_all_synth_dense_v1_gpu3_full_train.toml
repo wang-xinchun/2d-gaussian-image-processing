@@ -1,0 +1,75 @@
+[identity]
+architecture = "V1"
+template = "T01"
+run = "A_dsh18_all_synth_dense_v1_gpu3_full_train"
+full_id = "V1/T01/A_dsh18_all_synth_dense_v1_gpu3_full_train"
+
+[task]
+name = "UHD_video_deshaking"
+mode = "paired_video_stabilization_frame_gpu3_dense_full_train"
+classification = "current_uhd_video_deshaking_gpu3_dense_full_train"
+notes = "GPU3-only training on the duration-aware dense synthetic deshaking paired-frame view. GPU0/1/2 are intentionally avoided because they are occupied by external processes."
+
+[dataset]
+name = "UHD_video_deshaking_dense_paired_frames"
+task = "paired_uhd_video_deshake_stabilization_frames"
+data_root = "/home/ldj/wxc/4K_8K/all_synth_deshake_dense_v1"
+train_input = "/home/ldj/wxc/4K_8K/all_synth_deshake_dense_v1/paired_frames/train/input"
+train_target = "/home/ldj/wxc/4K_8K/all_synth_deshake_dense_v1/paired_frames/train/target"
+val_input = "/home/ldj/wxc/4K_8K/all_synth_deshake_dense_v1/paired_frames/val/input"
+val_target = "/home/ldj/wxc/4K_8K/all_synth_deshake_dense_v1/paired_frames/val/target"
+train_offset = 0
+train_limit = 1992
+val_offset = 0
+val_limit = 488
+preflight_val_limit = 32
+train_crop_size = 512
+val_crop_size = 512
+augment_flip = true
+num_workers = 0
+verified_train_pairs = 1992
+verified_val_pairs = 488
+
+[model]
+in_channels = 3
+out_channels = 3
+width = 32
+lowres_scale = 4
+highres_blocks = 2
+lowres_blocks = 4
+decoder_blocks = 2
+affine_rank = 4
+gaussian_atoms = 4
+gaussian_param_dim = 10
+max_frequency = 4.0
+max_texture_gain = 1.0
+train_context_size = 0
+train_supervision_crop_size = 0
+
+[loss]
+charbonnier_weight = 1.0
+gradient_weight = 0.05
+
+[optimizer]
+name = "AdamW"
+lr = 0.0002
+weight_decay = 0.0001
+
+[training]
+tier = "controlled_dense_full_train"
+wall_clock_minutes = 80.0
+max_steps = 2000
+batch_size = 24
+grad_accum = 1
+seed = 20260606
+device = "auto"
+amp = false
+log_interval = 5
+val_interval = 100
+checkpoint_interval = 200
+max_val_batches = 64
+ddp_find_unused_parameters = true
+
+[archive]
+output_root = "experiments/V1/runs"
+snapshot_on_start = true

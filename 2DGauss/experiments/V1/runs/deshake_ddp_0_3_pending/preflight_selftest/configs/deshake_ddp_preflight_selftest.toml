@@ -1,0 +1,20 @@
+[identity]
+run_id = "deshake_ddp_0_3_preflight_selftest"
+purpose = "video_stabilization_deshake_preflight_only"
+
+[task]
+name = "uhd_video_stabilization_deshake"
+mode = "paired_video_stabilization"
+
+[training]
+batch_size = 2
+max_steps = 2
+
+[dataset]
+name = "uhd_video_stabilization_selftest"
+task = "paired_video_deshake"
+num_workers = 0
+train_input = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/train/input"
+train_target = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/train/target"
+val_input = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/val/input"
+val_target = "/home/ldj/wxc/2DGauss/experiments/V1/runs/deshake_ddp_0_3_pending/preflight_selftest/data/val/target"
