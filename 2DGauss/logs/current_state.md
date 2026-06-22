@@ -1,6 +1,6 @@
 # Current State
 
-更新时间: 2026-06-22 18:20:00 CST
+更新时间: 2026-06-22 19:12:00 CST
 
 ## Active Goal
 
@@ -64,10 +64,12 @@ A37-aligned test result:
 - Privacy rule: all project GitHub credentials, wrappers, and user-installed skills must stay under `/home/ldj/wxc`; do not put them in `~/.ssh`, `~/.gitconfig`, or global Codex skill directories on the shared server.
 - Current GitHub SSH key is stored under `/home/ldj/wxc/.private/github/`; current repository-local SSH dispatcher is `/home/ldj/wxc/.private/ssh/git-ssh-dispatch`; both are ignored by `/home/ldj/wxc/.gitignore`.
 - User-installed skills were moved to `/home/ldj/wxc/.codex/skills/`; `.codex/` is ignored.
-- GitHub SSH auth succeeds as `wang-xinchun` through the project-local dispatcher. Private GitHub remote `github` is configured as `git@github.com:wang-xinchun/2d-gaussian-image-processing.git`; repository is empty and no push has been performed yet.
-- GitHub push capability has been verified with a temporary branch; the temporary branch was deleted and remote `HEAD` points to `main`.
+- GitHub SSH auth succeeds as `wang-xinchun` through the project-local dispatcher. Private GitHub remote `github` is configured as `git@github.com:wang-xinchun/2d-gaussian-image-processing.git`; remote `HEAD` points to `main`.
+- GitHub 首次 source mirror push 已完成：commit `03296272d2ff7635f92ad45400c10873a4b73874` pushed to `github/main`；对应操作记录 `OP-000773`。
+- V1/A-series 旧架构分支已补入 GitHub mirror：commit `4734fec278049e1d1ec70bfdc4cac8e43893bc8e` pushed to `github/main`；远端核验 `G_RSCN=101` files、`V1=730` files、forbidden artifact scan empty；对应用户要求 `MSG-000728`、操作记录 `OP-000774`。
 - Tool docs: public usage guide `/home/ldj/wxc/GITHUB_TOOL_USAGE.md`; private key-handling guide `/home/ldj/wxc/.private/github/README.md` (ignored).
-- Before first push, audit `.gitignore`, large files, datasets, checkpoints, archives, logs, and secrets. Do not `git add .` blindly.
+- 当前 GitHub 镜像包含轻量代码/文档、新架构 `experiments/G_RSCN` 和旧架构 `experiments/V1` 的 configs/manifests/gate checks/result analyses/scripts；服务器本地仍保留完整 datasets、checkpoints、metrics、raw logs、papers 和实验输出。
+- 后续仍不要 `git add .`；同步前必须继续审计 `.gitignore`、staged 文件、large files、datasets、checkpoints、archives、logs 和 secrets。
 - Do not lengthen G12 or rerun it with only scalar/threshold tweaks.
 - Do not promote aggregate PSNR-only or protect-only movement.
 - Next probe should be structural: `G_4kd13` or `G_4kd12b` should split Gaussian-conditioned high-preserve and low-dehaze route-control capacity while keeping the immutable Gaussian core.
@@ -85,5 +87,5 @@ A37-aligned test result:
 ## Logging Rules
 
 - 新窗口先读本文件，再按 `G_4kd12`、`G_4kd12_smoke01`、`DEC-000229`、`OP-000762`、`OP-000763`、`postmortem_20260622_g_rscn_g06_g10_status.md` 和 `grscn_breakthrough_strategy_20260622.md` 定点检索 raw logs。
-- 最新用户要求是认真阅读 `logs/messages.md` 以及其他日志，明确项目在做什么：`MSG-000725`。
+- 最新用户要求是确认 GitHub 私仓已经同时包含新 G-RSCN 架构和旧 V1/A-series 架构，且旧架构是重要分支：`MSG-000728`。
 - 新实验必须维护 run-local `manifest.md`、`gate_check.md`、`result_analysis.md`，并更新全局 `current_state.md`、`operations`，必要时追加 `DEC-*`。
