@@ -487,8 +487,8 @@ class ModelConfig:
             raise ValueError("gaussian_route_control.direction must be gt, gte, lt, or lte")
         if not 0.0 <= self.gaussian_route_control.learned_gate_weight <= 1.0:
             raise ValueError("gaussian_route_control.learned_gate_weight must be in [0, 1]")
-        if self.gaussian_route_control.adapter_count != 1:
-            raise ValueError("gaussian_route_control.adapter_count must be 1 for the first G-RSCN probe")
+        if self.gaussian_route_control.adapter_count not in {1, 2}:
+            raise ValueError("gaussian_route_control.adapter_count must be 1 or 2")
         if self.decoupled_correction.blocks < 0:
             raise ValueError("decoupled_correction.blocks must be non-negative")
         if self.decoupled_correction.strength < 0.0:

@@ -4316,6 +4316,7 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
     if step_guard_enabled and bool(distributed.get("enabled", False)):
         raise ValueError("step_no_harm_guard is single-process only; G-RSCN launchers must not use DDP")
     step_guard_interval = max(int(training_cfg.get("step_no_harm_guard_interval", grad_accum)), 1)
+    step_guard_start_step = max(int(training_cfg.get("step_no_harm_guard_start_step", 1)), 1)
     step_guard_max_batches = max(int(training_cfg.get("step_no_harm_guard_max_batches", 8)), 1)
     step_guard_restore_optimizer = bool(training_cfg.get("step_no_harm_guard_restore_optimizer", True))
     step_guard_two_phase = bool(training_cfg.get("step_no_harm_guard_two_phase_enabled", False))
@@ -4336,6 +4337,8 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
         "checked": False,
         "passed": True,
         "rolled_back": False,
+        "start_step": step_guard_start_step,
+        "interval": step_guard_interval,
         "checks": [],
     }
     model.train()
@@ -4411,6 +4414,8 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
                 json.dumps(
                     {
                         "event": "step_no_harm_guard_baseline_initialized",
+                        "start_step": step_guard_start_step,
+                        "interval": step_guard_interval,
                         "max_batches": step_guard_max_batches,
                         **step_guard_baseline_metrics,
                     },
@@ -4438,6 +4443,7 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
                     clone_model_state(model)
                     if step_guard_enabled
                     and is_main_process(distributed)
+                    and step >= step_guard_start_step
                     and step % step_guard_interval == 0
                     else None
                 )
@@ -4652,6 +4658,7 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
                         "passed": guard_passed,
                         "rolled_back": rolled_back,
                         "max_batches": step_guard_max_batches,
+                        "start_step": step_guard_start_step,
                         "interval": step_guard_interval,
                         "restore_optimizer": step_guard_restore_optimizer,
                         "two_phase_enabled": step_guard_two_phase,
@@ -4703,6 +4710,8 @@ def run_training(config: Dict[str, Any], config_path: Path, distributed: Dict[st
                         "checked": False,
                         "passed": True,
                         "rolled_back": False,
+                        "start_step": step_guard_start_step,
+                        "interval": step_guard_interval,
                         "checks": [],
                     }
 

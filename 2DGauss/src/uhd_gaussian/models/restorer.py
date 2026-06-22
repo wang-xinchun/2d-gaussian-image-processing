@@ -619,6 +619,7 @@ class GaussianRouteControl(nn.Module):
         direction: str,
         learned_gate_weight: float,
         detach_gate: bool,
+        adapter_count: int = 1,
     ) -> None:
         super().__init__()
         self.strength = float(strength)
@@ -627,6 +628,9 @@ class GaussianRouteControl(nn.Module):
         self.direction = str(direction)
         self.learned_gate_weight = float(learned_gate_weight)
         self.detach_gate = bool(detach_gate)
+        if adapter_count not in {1, 2}:
+            raise ValueError("GaussianRouteControl adapter_count must be 1 or 2")
+        self.adapter_count = int(adapter_count)
 
         # Inputs: decoder feature plus Gaussian/control/context scalar maps.
         route_channels = feature_channels + 8
@@ -635,6 +639,19 @@ class GaussianRouteControl(nn.Module):
             nn.GELU(),
             StackedResidualBlocks(feature_channels, blocks),
         )
+        self.high_prior_encoder: nn.Module | None = None
+        self.low_prior_encoder: nn.Module | None = None
+        if self.adapter_count == 2:
+            self.high_prior_encoder = nn.Sequential(
+                nn.Conv2d(route_channels, feature_channels, kernel_size=1),
+                nn.GELU(),
+                StackedResidualBlocks(feature_channels, blocks),
+            )
+            self.low_prior_encoder = nn.Sequential(
+                nn.Conv2d(route_channels, feature_channels, kernel_size=1),
+                nn.GELU(),
+                StackedResidualBlocks(feature_channels, blocks),
+            )
         self.high_control = nn.Sequential(
             StackedResidualBlocks(feature_channels, blocks),
             nn.Conv2d(feature_channels, feature_channels, kernel_size=1),
@@ -747,8 +764,14 @@ class GaussianRouteControl(nn.Module):
             prior + prior * residual,
         )
         confidence = torch.sigmoid(self.confidence_head(route_feature))
-        high_delta = self.strength * self.high_delta(self.high_control(route_feature))
-        low_delta = self.strength * self.low_delta(self.low_control(route_feature))
+        if self.high_prior_encoder is not None and self.low_prior_encoder is not None:
+            high_route_feature = self.high_prior_encoder(route_input)
+            low_route_feature = self.low_prior_encoder(route_input)
+        else:
+            high_route_feature = route_feature
+            low_route_feature = route_feature
+        high_delta = self.strength * self.high_delta(self.high_control(high_route_feature))
+        low_delta = self.strength * self.low_delta(self.low_control(low_route_feature))
         blend_gate = gate.detach() if self.detach_gate else gate
         delta = blend_gate * high_delta + (1.0 - blend_gate) * low_delta
         return {
@@ -1032,6 +1055,7 @@ class CrossResolutionGaussianRestorer(nn.Module):
                 direction=route_cfg.direction,
                 learned_gate_weight=route_cfg.learned_gate_weight,
                 detach_gate=route_cfg.detach_gate,
+                adapter_count=route_cfg.adapter_count,
             )
 
     def initialize_input_std_route_decoder_heads_from_base(self) -> None:
