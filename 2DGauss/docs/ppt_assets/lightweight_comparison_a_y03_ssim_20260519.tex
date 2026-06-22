@@ -1,0 +1,36 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{times}
+
+\begin{document}
+\scriptsize
+\begin{minipage}{0.99\textwidth}
+\centering
+\textbf{Lightweight Comparison for A\_y03 (Deblur-Oriented)}
+
+\vspace{2mm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllccc}
+\toprule
+Method & Venue & Benchmark / Dataset & Params (M) $\downarrow$ & Latency / Time $\downarrow$ & PSNR $\uparrow$ & SSIM $\uparrow$ \\
+\midrule
+MPRNet & CVPR 2021 & GoPro / 256$\times$256 & 20.0 & 148 ms & 32.66 & 0.959 \\
+Restormer & CVPR 2022 & GoPro / 256$\times$256 & 26.1$\sim$26.2 & 140 ms & 32.92 & 0.961 \\
+Stripformer & ECCV 2022 & GoPro / 256$\times$256 & 20.0 & 52 ms & 33.08 & 0.962 \\
+NAFNet & ECCV 2022 & GoPro / 256$\times$256 & 65G MACs & 65 ms & 33.69 & 0.967 \\
+FFTformer & CVPR 2023 & UHD-Blur / 256$\times$256 & -- & -- & 25.409 & 0.7571 \\
+LMAR & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 26.472 & 0.7989 \\
+UHDformer & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 28.821 & 0.8440 \\
+UHDPromer & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 29.527 & 0.8584 \\
+\textbf{Ours (A\_y03)} & \textbf{internal official} & \textbf{UHD\_deblur test} & \textbf{0.304} & \textbf{7.56 ms} & \textbf{26.2727} & \textbf{0.7650$^{*}$} \\
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{2mm}
+\footnotesize
+Notes: The benchmark-anchor rows are literature reference points, while the Ours row is our official result on \texttt{UHD\_deblur}. The reported SSIM for our model is a quick full-image check on the first 20 test samples with the same evaluation protocol; the official full 300-sample result remains the accepted PSNR of 26.2727 dB.
+\end{minipage}
+\end{document}

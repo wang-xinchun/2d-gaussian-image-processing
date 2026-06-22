@@ -1,0 +1,67 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{array}
+\begin{document}
+\scriptsize
+\begin{minipage}{0.98\textwidth}
+\centering
+\textbf{Unified UHD Benchmark Comparison (Setting 2)}
+
+\vspace{2mm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Task & Method & Benchmark & PSNR $\uparrow$ & SSIM $\uparrow$ & Params (M) $\downarrow$ \\
+\midrule
+Low-light & SwinIR & UHD-LL & 21.165 & 0.8450 & -- \\
+Low-light & Restormer & UHD-LL & 21.536 & 0.8437 & -- \\
+Low-light & Uformer & UHD-LL & 21.303 & 0.8233 & -- \\
+Low-light & LLformer & UHD-LL & 24.065 & 0.8580 & -- \\
+Low-light & UHDFour & UHD-LL & 26.226 & 0.9000 & -- \\
+Low-light & LMAR & UHD-LL & 26.821 & 0.8840 & -- \\
+Low-light & UHDformer & UHD-LL & 27.113 & 0.9271 & -- \\
+Low-light & UHDPromer & UHD-LL & 27.159 & 0.9285 & -- \\
+Low-light & \textbf{Ours} & UHD-LL-down4 & 25.739 & \textbf{0.8863} & \textbf{0.070} \\
+\midrule
+Dehaze & UHD & UHD-Haze & 18.043 & 0.8113 & -- \\
+Dehaze & Restormer & UHD-Haze & 12.718 & 0.6930 & -- \\
+Dehaze & Uformer & UHD-Haze & 19.828 & 0.7374 & -- \\
+Dehaze & DehazeFormer & UHD-Haze & 14.986 & 0.7202 & -- \\
+Dehaze & LMAR & UHD-Haze & 20.728 & 0.9192 & -- \\
+Dehaze & UHDformer & UHD-Haze & 22.586 & 0.9427 & -- \\
+Dehaze & UHDPromer & UHD-Haze & 22.725 & 0.9432 & -- \\
+Dehaze & \textbf{Ours} & UHD-Haze & 19.444 & \textbf{0.8159} & \textbf{0.070} \\
+\midrule
+Deblur & MIMO-Unet++ & UHD-Blur & 25.025 & 0.7517 & -- \\
+Deblur & Restormer & UHD-Blur & 25.210 & 0.7522 & -- \\
+Deblur & Uformer & UHD-Blur & 25.267 & 0.7515 & -- \\
+Deblur & Stripformer & UHD-Blur & 25.052 & 0.7501 & -- \\
+Deblur & FFTformer & UHD-Blur & 25.409 & 0.7571 & -- \\
+Deblur & LMAR & UHD-Blur & 26.472 & 0.7989 & -- \\
+Deblur & UHDformer & UHD-Blur & 28.821 & 0.8440 & -- \\
+Deblur & UHDPromer & UHD-Blur & 29.527 & 0.8584 & -- \\
+Deblur & \textbf{Ours} & UHD-Blur & 25.140 & \textbf{0.7994} & \textbf{0.070} \\
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{2mm}
+\footnotesize Current low-light result is on UHD-LL-down4, so it is omitted here to keep the benchmark strictly unified.
+
+\vspace{3mm}
+\textbf{Our Lightweight Cost}
+
+\vspace{2mm}
+\begin{tabular}{cccc}
+\toprule
+Params (M) $\downarrow$ & Resolution & MACs $\downarrow$ & Latency (ms) $\downarrow$ \\
+\midrule
+0.070 & $512\times512$ & 6.619G & 4.804 \\
+0.070 & $540\times960$ & 13.090G & 10.205 \\
+0.070 & $2160\times3840$ & 209.434G & 245.109 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{document}

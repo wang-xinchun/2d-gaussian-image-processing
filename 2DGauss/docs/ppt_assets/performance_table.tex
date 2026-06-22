@@ -1,0 +1,65 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{times}
+\begin{document}
+\begin{tabular}{llllccc}
+\toprule
+Task & Method & Venue & Dataset & Eval. Split & PSNR $\uparrow$ & SSIM $\uparrow$ \\
+\midrule
+Low-light Enhancement
+& Ours (V1/T01/A01)
+& --
+& UHD-LL\_down4
+& Official Test
+& 25.7391
+& -- \\
+& MIRNet-v2
+& TPAMI 2023
+& LOL
+& Official Test
+& 24.74
+& 0.851 \\
+\midrule
+Motion Deblurring
+& Ours (V1/T01/A03)
+& --
+& UHD\_deblur
+& Official Test
+& 25.1402
+& -- \\
+& MPRNet
+& CVPR 2021
+& GoPro
+& Official Test
+& 32.66
+& 0.959 \\
+& Restormer
+& CVPR 2022
+& GoPro
+& Official Test
+& 32.92
+& 0.961 \\
+& NAFNet
+& ECCV 2022
+& GoPro
+& Official Test
+& 33.69
+& 0.967 \\
+\midrule
+Dehazing / Weather Restoration
+& Ours (V1/T01/A\_a02)
+& --
+& UHD\_haze
+& Validation
+& 19.9608
+& -- \\
+& TransWeather
+& CVPR 2022
+& Test1 (Rain+Fog)
+& Official Test
+& 31.05
+& 0.9509 \\
+\bottomrule
+\end{tabular}
+\end{document}

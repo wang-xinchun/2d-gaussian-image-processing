@@ -1,0 +1,24 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{times}
+\usepackage{graphicx}
+\begin{document}
+\scriptsize
+\begin{tabular}{llllllll}
+\toprule
+Method & Venue & Task & Benchmark & PSNR $\uparrow$ & SSIM $\uparrow$ & Params (M) $\downarrow$ & Cost $\downarrow$ \\
+\midrule
+Ours (V1/T01/A01) & -- & Low-light & UHD-LL\_down4 & 25.7391 & -- & 0.070 & 209.43G MACs @ 4K \\
+MIRNet-v2 & TPAMI 2023 & Low-light & LOL & 24.74 & 0.851 & 5.9 & 140B FLOPs \\
+\midrule
+Ours (V1/T01/A03) & -- & Deblur & UHD\_deblur & 25.1402 & -- & 0.070 & 209.43G MACs @ 4K \\
+MPRNet & CVPR 2021 & Deblur & GoPro & 32.66 & 0.959 & 20 & -- \\
+Stripformer & ECCV 2022 & Deblur & GoPro & 33.08 & 0.962 & 20 & -- \\
+Restormer & CVPR 2022 & Deblur & GoPro & 32.92 & 0.961 & -- & 140G MACs \\
+NAFNet & ECCV 2022 & Deblur & GoPro & 33.69 & 0.967 & -- & 65G MACs \\
+\midrule
+Ours (V1/T01/A\_a02) & -- & Dehaze & UHD\_haze & 19.9608 & -- & 0.070 & 209.43G MACs @ 4K \\
+TransWeather & CVPR 2022 & Weather & Test1 & 31.05 & 0.9509 & 31 & -- \\
+\bottomrule
+\end{tabular}
+\end{document}

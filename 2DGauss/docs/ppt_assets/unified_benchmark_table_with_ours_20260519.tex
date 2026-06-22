@@ -1,0 +1,54 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{array}
+\begin{document}
+\scriptsize
+\begin{minipage}{0.98\textwidth}
+\centering
+\textbf{Unified UHD Benchmark Comparison with Our Official Results}
+
+\vspace{2mm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+Task & Method & Benchmark / Dataset & PSNR $\uparrow$ & SSIM $\uparrow$ \\
+\midrule
+Low-light & SwinIR & UHD-LL & 21.165 & 0.8450 \\
+Low-light & Restormer & UHD-LL & 21.536 & 0.8437 \\
+Low-light & Uformer & UHD-LL & 21.303 & 0.8233 \\
+Low-light & LLformer & UHD-LL & 24.065 & 0.8580 \\
+Low-light & UHDFour & UHD-LL & 26.226 & 0.9000 \\
+Low-light & LMAR & UHD-LL & 26.821 & 0.8840 \\
+Low-light & UHDformer & UHD-LL & 27.113 & 0.9271 \\
+Low-light & UHDPromer & UHD-LL & 27.159 & 0.9285 \\
+Low-light & \textbf{Ours (A\_01)} & \textbf{UHD-LL\_down4} & \textbf{25.7394} & \textbf{0.8863} \\
+\midrule
+Dehaze & UHD & UHD-Haze & 18.043 & 0.8113 \\
+Dehaze & Restormer & UHD-Haze & 12.718 & 0.6930 \\
+Dehaze & Uformer & UHD-Haze & 19.828 & 0.7374 \\
+Dehaze & DehazeFormer & UHD-Haze & 14.986 & 0.7202 \\
+Dehaze & LMAR & UHD-Haze & 20.728 & 0.9192 \\
+Dehaze & UHDformer & UHD-Haze & 22.586 & 0.9427 \\
+Dehaze & UHDPromer & UHD-Haze & 22.725 & 0.9432 \\
+Dehaze & \textbf{Ours (A\_a02)} & \textbf{UHD\_haze} & \textbf{19.4444} & \textbf{0.8159} \\
+\midrule
+Deblur & MIMO-Unet++ & UHD-Blur & 25.025 & 0.7517 \\
+Deblur & Restormer & UHD-Blur & 25.210 & 0.7522 \\
+Deblur & Uformer & UHD-Blur & 25.267 & 0.7515 \\
+Deblur & Stripformer & UHD-Blur & 25.052 & 0.7501 \\
+Deblur & FFTformer & UHD-Blur & 25.409 & 0.7571 \\
+Deblur & LMAR & UHD-Blur & 26.472 & 0.7989 \\
+Deblur & UHDformer & UHD-Blur & 28.821 & 0.8440 \\
+Deblur & UHDPromer & UHD-Blur & 29.527 & 0.8584 \\
+Deblur & \textbf{Ours (A\_y03)} & \textbf{UHD\_deblur} & \textbf{26.2727} & \textbf{0.7994} \\
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{2mm}
+\footnotesize
+Benchmark-anchor rows are literature references from the local benchmark tables. Our rows are official results from the project runs. The dehaze result uses the accepted crop size of 512 from the corresponding run configuration.
+\end{minipage}
+\end{document}

@@ -1,0 +1,87 @@
+.tailscale-bin/
+.tailscale-state/
+
+# Local private credentials/config; never commit.
+.private/
+
+# Local Codex skills/config for this shared server project; never commit.
+.codex/
+
+# Server-local tooling and non-project worktrees.
+4K_8K/
+baiduwangpan/
+bin/
+任务四/
+任务五/
+codex*.tar.gz
+codex-app-server-*
+NAS_GIT_USAGE.md
+
+# Python/cache/runtime noise.
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.ipynb_checkpoints/
+
+# Generic heavy artifacts.
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.bin
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+*.bak
+*.log
+*.tmp
+
+# 2DGauss local-only datasets, papers, outputs, and raw experiment products.
+2DGauss/datasets/
+2DGauss/papers/
+2DGauss/打包文件/
+2DGauss/2D数据集论文.pdf
+2DGauss/migration_failed_filezilla_20260605.tar.gz
+2DGauss/.claude/settings.local.json
+2DGauss/.exit_code
+2DGauss/-0.10
+2DGauss/=
+
+# Keep experiment packages lightweight: configs, launchers, and analysis docs only.
+2DGauss/experiments/**/checkpoints/
+2DGauss/experiments/**/metrics/
+2DGauss/experiments/**/logs/
+2DGauss/experiments/**/diagnostics/
+2DGauss/experiments/**/outputs/
+2DGauss/experiments/**/samples/
+2DGauss/experiments/**/template_snapshot/
+2DGauss/experiments/**/*.json
+2DGauss/experiments/**/*.jsonl
+2DGauss/experiments/**/*.png
+2DGauss/experiments/**/*.jpg
+2DGauss/experiments/**/*.jpeg
+
+# Keep logs readable in GitHub; raw JSONL remains local audit state.
+2DGauss/logs/*.jsonl
+2DGauss/logs/messages.md
+2DGauss/logs/operations.md
+
+# Generated document build products.
+2DGauss/docs/ppt_assets/*.aux
+2DGauss/docs/ppt_assets/*.fdb_latexmk
+2DGauss/docs/ppt_assets/*.fls
+2DGauss/docs/ppt_assets/*.log
+2DGauss/docs/ppt_assets/*.pdf
+2DGauss/docs/ppt_assets/*.png

@@ -1,0 +1,30 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{array}
+
+\begin{document}
+\scriptsize
+\begin{minipage}{0.98\textwidth}
+\centering
+\textbf{Official Multi-Task Performance Summary}
+
+\vspace{2mm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllrrr}
+\toprule
+Task & Method & Benchmark / Dataset & Samples & Loss $\downarrow$ & PSNR $\uparrow$ & SSIM $\uparrow$ \\
+\midrule
+Low-light & Ours (A\_01) & UHD-LL\_down4 & 150 & 0.0565769 & 25.7394 & 0.8863 \\
+Dehaze & Ours (A\_a02) & UHD\_haze & 231 & 0.1011558 & 19.4444 & 0.8159 \\
+Deblur & Ours (A\_y03) & UHD\_deblur & 300 & 0.0329319 & 26.2727 & 0.7994 \\
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{2mm}
+\footnotesize
+All three rows are official full-image or official test-set results from our local benchmark protocol. The dehaze row uses the accepted crop size of 512 from the corresponding run configuration.
+\end{minipage}
+\end{document}

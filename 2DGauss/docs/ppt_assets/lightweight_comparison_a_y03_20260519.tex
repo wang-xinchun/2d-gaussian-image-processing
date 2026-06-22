@@ -1,0 +1,36 @@
+\documentclass[preview,border=6pt]{standalone}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{times}
+
+\begin{document}
+\scriptsize
+\begin{minipage}{0.99\textwidth}
+\centering
+\textbf{Lightweight Comparison for A\_y03 (Deblur-Oriented)}
+
+\vspace{2mm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllccc}
+\toprule
+Method & Venue & Benchmark / Input & Params (M) $\downarrow$ & Latency / Time $\downarrow$ & PSNR $\uparrow$ & Note \\
+\midrule
+MPRNet & CVPR 2021 & GoPro / 256$\times$256 & 20.0 & 148 ms & 32.66 & paper anchor \\
+Restormer & CVPR 2022 & GoPro / 256$\times$256 & 26.1$\sim$26.2 & 140 ms & 32.92 & approx. params from paper line \\
+Stripformer & ECCV 2022 & GoPro / 256$\times$256 & 20.0 & 52 ms & 33.08 & paper anchor \\
+NAFNet & ECCV 2022 & GoPro / 256$\times$256 & 65G MACs & 65 ms & 33.69 & cost anchor \\
+FFTformer & CVPR 2023 & UHD-Blur / 256$\times$256 & -- & -- & 25.409 & benchmark anchor only \\
+LMAR & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 26.472 & benchmark anchor only \\
+UHDformer & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 28.821 & benchmark anchor only \\
+UHDPromer & UHD-Blur & UHD-Blur / 2160$\times$3840 & -- & -- & 29.527 & benchmark anchor only \\
+\textbf{Ours (A\_y03)} & \textbf{UHD-deblur} & \textbf{256$\times$256} & \textbf{0.304} & \textbf{7.56 ms} & \textbf{26.2727} & \textbf{official full-image PSNR} \\
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{2mm}
+\footnotesize
+Notes: Restormer parameter count is reported approximately as \(\sim 26.1\)M from the paper's model-size line; NAFNet and some UHD baselines are shown as cost or benchmark anchors because exact comparable parameter counts are not consistently reported in the local materials. Our latency is measured locally on the current GPU with a single \texttt{1$\times$3$\times$256$\times$256} forward pass after warmup.
+\end{minipage}
+\end{document}
