@@ -41,11 +41,11 @@ New windows should read `current_state.md` first. They should not start by readi
 
 ## Current Layer Index
 
-Updated: `2026-06-22 19:12:00 CST`
+Updated: `2026-06-22 19:28:00 CST`
 
 - Startup handoff: `/home/ldj/wxc/2DGauss/logs/current_state.md`.
-- Raw conversation: `/home/ldj/wxc/2DGauss/logs/messages.md` and `/home/ldj/wxc/2DGauss/logs/messages.jsonl`; latest recorded user request is `MSG-000728`.
-- Operation audit: `/home/ldj/wxc/2DGauss/logs/operations.md` and `/home/ldj/wxc/2DGauss/logs/operations.jsonl`; latest operation is `OP-000774`.
+- Raw conversation: `/home/ldj/wxc/2DGauss/logs/messages.md` and `/home/ldj/wxc/2DGauss/logs/messages.jsonl`; latest recorded user request is `MSG-000729`.
+- Operation audit: `/home/ldj/wxc/2DGauss/logs/operations.md` and `/home/ldj/wxc/2DGauss/logs/operations.jsonl`; latest operation is `OP-000775`.
 - Decision audit: `/home/ldj/wxc/2DGauss/logs/decisions.md`; latest decision is `DEC-000229`.
 - Current G-RSCN experiment line: `/home/ldj/wxc/2DGauss/experiments/G_RSCN/README.md`.
 - Current G-RSCN run: `/home/ldj/wxc/2DGauss/experiments/G_RSCN/runs/G_4kd12/manifest.md`, `/home/ldj/wxc/2DGauss/experiments/G_RSCN/runs/G_4kd12/gate_check.md`, `/home/ldj/wxc/2DGauss/experiments/G_RSCN/runs/G_4kd12/result_analysis.md`.

@@ -1,6 +1,6 @@
 # Current State
 
-更新时间: 2026-06-22 19:12:00 CST
+更新时间: 2026-06-22 19:28:00 CST
 
 ## Active Goal
 
@@ -67,6 +67,7 @@ A37-aligned test result:
 - GitHub SSH auth succeeds as `wang-xinchun` through the project-local dispatcher. Private GitHub remote `github` is configured as `git@github.com:wang-xinchun/2d-gaussian-image-processing.git`; remote `HEAD` points to `main`.
 - GitHub 首次 source mirror push 已完成：commit `03296272d2ff7635f92ad45400c10873a4b73874` pushed to `github/main`；对应操作记录 `OP-000773`。
 - V1/A-series 旧架构分支已补入 GitHub mirror：commit `4734fec278049e1d1ec70bfdc4cac8e43893bc8e` pushed to `github/main`；远端核验 `G_RSCN=101` files、`V1=730` files、forbidden artifact scan empty；对应用户要求 `MSG-000728`、操作记录 `OP-000774`。
+- GitHub 端完整性/隐私终检已完成：commit `3b59adcf12367371721f91f621bbdbf123907356` pushed to `github/main`，补入轻量研究报告 `2DGauss/deep-research-report.md` 并硬化 `.gitignore`；远端只有 `main`，共 `979` files，`src=24`、`scripts=36`、`docs=67`、`logs=17`、`G_RSCN=101`、`V1=730`、`deep_report=1`；当前树与 `github/main` 全历史均无 >1MiB blob、权重/数据/输出/日志/图片/视频/私密路径命中，真实密钥/token 扫描为空；对应用户要求 `MSG-000729`、操作记录 `OP-000775`。
 - Tool docs: public usage guide `/home/ldj/wxc/GITHUB_TOOL_USAGE.md`; private key-handling guide `/home/ldj/wxc/.private/github/README.md` (ignored).
 - 当前 GitHub 镜像包含轻量代码/文档、新架构 `experiments/G_RSCN` 和旧架构 `experiments/V1` 的 configs/manifests/gate checks/result analyses/scripts；服务器本地仍保留完整 datasets、checkpoints、metrics、raw logs、papers 和实验输出。
 - 后续仍不要 `git add .`；同步前必须继续审计 `.gitignore`、staged 文件、large files、datasets、checkpoints、archives、logs 和 secrets。
@@ -87,5 +88,5 @@ A37-aligned test result:
 ## Logging Rules
 
 - 新窗口先读本文件，再按 `G_4kd12`、`G_4kd12_smoke01`、`DEC-000229`、`OP-000762`、`OP-000763`、`postmortem_20260622_g_rscn_g06_g10_status.md` 和 `grscn_breakthrough_strategy_20260622.md` 定点检索 raw logs。
-- 最新用户要求是确认 GitHub 私仓已经同时包含新 G-RSCN 架构和旧 V1/A-series 架构，且旧架构是重要分支：`MSG-000728`。
+- 最新用户要求是更新 GitHub 端，确保没有隐私或权重文件泄露，同时项目完整：`MSG-000729`。
 - 新实验必须维护 run-local `manifest.md`、`gate_check.md`、`result_analysis.md`，并更新全局 `current_state.md`、`operations`，必要时追加 `DEC-*`。
